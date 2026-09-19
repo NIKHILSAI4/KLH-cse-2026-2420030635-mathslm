@@ -2,6 +2,14 @@
 
 This folder contains five reference-model evaluators for the case study **Intelligent Concurrency Patterns for Edge AI Devices**. Each evaluator runs a model against the GSM8K math benchmark and reports accuracy and average response latency.
 
+## Models at a Glance
+
+- **Gemini API:** Minerva/PaLM surrogate
+- **OpenAI API:** GPT-3 verifier
+- **TinyLlama:** Local baseline
+- **Phi-2:** Local baseline
+- **Qwen2.5:** Local baseline
+
 ## Folder Overview
 
 ### 1. `1_minerva_palm`

@@ -3,9 +3,15 @@
 import os
 import re
 import time
+from pathlib import Path
 from typing import Any, Callable
 
 from datasets import load_dataset
+from dotenv import load_dotenv
+import matplotlib.pyplot as plt
+
+
+load_dotenv(Path(__file__).resolve().parents[1] / ".env")
 
 
 MAX_SAMPLES = int(os.getenv("MAX_SAMPLES", "25"))
@@ -66,6 +72,16 @@ def evaluate(generate: Callable[[str], str]) -> None:
         stats[2] += 1
     print(f"overall_accuracy={correct / len(examples):.3f}")
     print(f"mean_latency_seconds={total_latency / len(examples):.3f}")
+    dataset_names = list(by_dataset)
+    accuracies = [by_dataset[name][0] / by_dataset[name][2] for name in dataset_names]
+    plt.figure(figsize=(6, 4))
+    plt.bar(dataset_names, accuracies, color=["#4C78A8", "#F58518"])
+    plt.ylim(0, 1)
+    plt.ylabel("Accuracy")
+    plt.title("Accuracy by Dataset")
+    plt.tight_layout()
+    plt.savefig(Path(__file__).resolve().parent / "accuracy.jpeg", format="jpeg", dpi=150)
+    plt.close()
     for name, (hits, latency, count) in by_dataset.items():
         print(f"{name}_accuracy={hits / count:.3f} mean_latency_seconds={latency / count:.3f}")
 
